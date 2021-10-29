@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  redis1:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+  go-redsync1:
+    container_name: go-redsync1
+    build:
+      args:
+        - REDIS_ADDR=redis1:6379
+      context: ../
+      dockerfile: ./redsync/go.Dockerfile
+    image: go-redsync:latest
+    depends_on:
+      - redis1
+  go-redsync2:
+    container_name: go-redsync2
+    build:
+      args:
+        - REDIS_ADDR=redis1:6379
+      context: ../
+      dockerfile: ./redsync/go.Dockerfile
+    image: go-redsync:latest
+    depends_on:
+      - redis1
+  go-redsync3:
+    container_name: go-redsync3
+    build:
+      args:
+        - REDIS_ADDR=redis1:6379
+      context: ../
+      dockerfile: ./redsync/go.Dockerfile
+    image: go-redsync:latest
+    depends_on:
+      - redis1  
+    
